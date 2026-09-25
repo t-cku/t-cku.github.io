@@ -1,49 +1,108 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import FeaturedGrid from '../components/FeaturedGrid.astro';
-import { getFeatured } from '../lib/content';
 import { siteConfig } from '../config/site';
-
-const sources = [
-  { collection: 'engineering-projects', base: '/engineering/projects' },
-  { collection: 'engineering-notes', base: '/engineering/notes' },
-  { collection: 'product-builds', base: '/product/builds' },
-  { collection: 'product-writing', base: '/product/writing' },
-  { collection: 'music', base: '/music' },
-  { collection: 'creative', base: '/creative' },
-] as const;
-
-const allFeatured = (
-  await Promise.all(
-    sources.map(async ({ collection, base }) => {
-      const entries = await getFeatured(collection);
-      return entries.map((entry) => ({ entry, href: `${base}/${entry.id}` }));
-    })
-  )
-).flat();
-
-const featured = allFeatured
-  .sort((a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf())
-  .slice(0, 3);
+import profilePhoto from '../assets/profile.jpg';
 ---
 
 <BaseLayout title={siteConfig.name}>
-  <section class="intro">
-    <h1>{siteConfig.name}</h1>
-    <p>{siteConfig.intro}</p>
-  </section>
-
-  <section class="section-block">
-    <div class="section-heading">
-      <h2>Featured</h2>
+  <section class="hero">
+    <div class="hero-photo">
+      <div class="hero-photo-frame">
+        <Image
+          src={profilePhoto}
+          alt="Tiffany Ku smiling by the Seine at sunset, with the Eiffel Tower lit up in the background"
+          width={480}
+          height={600}
+          fit="cover"
+        />
+      </div>
+      <p class="location-tag">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14">
+          <path
+            fill="currentColor"
+            d="M12 2c-4.2 0-7.5 3.3-7.5 7.5 0 5.6 6.6 11.6 6.9 11.9a.8.8 0 0 0 1.2 0c.3-.3 6.9-6.3 6.9-11.9C19.5 5.3 16.2 2 12 2Zm0 10.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
+          />
+        </svg>
+        Hong Kong · London · Los Angeles
+      </p>
     </div>
-    <FeaturedGrid items={featured} emptyMessage="Nothing featured yet — check back soon." />
+    <div class="hero-intro">
+      <h1>{siteConfig.name}</h1>
+      <p>{siteConfig.intro}</p>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .intro p {
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .hero-intro p {
     color: var(--colour-text-muted);
     max-width: 38rem;
+  }
+
+  .hero-intro h1 {
+    text-align: center;
+  }
+
+  .hero-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+
+  .hero-photo-frame {
+    width: 100%;
+    max-width: 220px;
+    aspect-ratio: 4 / 5;
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+
+  .hero-photo-frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.15);
+  }
+
+  .location-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.25rem 0.85rem;
+    border-radius: 999px;
+    background: var(--colour-bg-subtle);
+    border: 1px solid var(--colour-border);
+    color: var(--colour-text-muted);
+    font-size: 0.8rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+
+    .hero-intro {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .hero-intro h1 {
+      text-align: left;
+    }
+
+    .hero-photo {
+      grid-column: 2;
+      grid-row: 1;
+    }
   }
 </style>
