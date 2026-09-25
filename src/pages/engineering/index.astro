@@ -7,9 +7,10 @@ import { skillCategories } from '../../config/skills';
 const entries = await getPublished('engineering');
 
 const boxes = entries.map((entry) => {
-  const ctaHref = entry.data.link?.url ?? `/engineering/${entry.id}`;
+  const hasBody = Boolean(entry.body?.trim());
+  const ctaHref = entry.data.link?.url ?? (hasBody ? `/engineering/${entry.id}` : undefined);
   const ctaLabel = entry.data.link?.label ?? 'View more';
-  const isExternal = /^https?:\/\//.test(ctaHref);
+  const isExternal = ctaHref ? /^https?:\/\//.test(ctaHref) : false;
 
   return {
     entry,
@@ -65,14 +66,16 @@ const boxes = entries.map((entry) => {
                   ))}
                 </ul>
               )}
-              <a
-                class="box-cta"
-                href={ctaHref}
-                target={isExternal ? '_blank' : undefined}
-                rel={isExternal ? 'noopener noreferrer' : undefined}
-              >
-                {ctaLabel} {isExternal ? '↗' : '→'}
-              </a>
+              {ctaHref && (
+                <a
+                  class="box-cta"
+                  href={ctaHref}
+                  target={isExternal ? '_blank' : undefined}
+                  rel={isExternal ? 'noopener noreferrer' : undefined}
+                >
+                  {ctaLabel} {isExternal ? '↗' : '→'}
+                </a>
+              )}
             </div>
           ))}
         </div>
