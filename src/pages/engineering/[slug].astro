@@ -1,10 +1,10 @@
 ---
 import { render } from 'astro:content';
-import PostLayout from '../../../layouts/PostLayout.astro';
-import { getPublished } from '../../../lib/content';
+import PostLayout from '../../layouts/PostLayout.astro';
+import { getPublished } from '../../lib/content';
 
 export async function getStaticPaths() {
-  const entries = await getPublished('engineering-projects');
+  const entries = await getPublished('engineering');
   return entries.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },

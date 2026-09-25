@@ -13,11 +13,19 @@ const baseSchema = z.object({
   draft: z.boolean().default(false),
 });
 
-// Article-style entries: Engineering (Projects/Notes), Product (Builds/Writing), Music, Creative.
+// Article-style entries: Engineering, Product (Builds/Writing), Music, Creative.
+// `link` is an optional bottom-of-box CTA — e.g. { label: "View on GitHub", url: "https://…" }
+// overriding the default "View more" link to the entry's own page.
 const postSchema = ({ image }: SchemaContext) =>
   baseSchema.extend({
     heroImage: image().optional(),
     heroImageAlt: z.string().optional(),
+    link: z
+      .object({
+        label: z.string(),
+        url: z.string(),
+      })
+      .optional(),
   });
 
 // Food entries are photo-led rather than article-led; body text is an optional recipe.
@@ -40,8 +48,7 @@ const postCollection = (dir: string) =>
   });
 
 export const collections = {
-  'engineering-projects': postCollection('engineering-projects'),
-  'engineering-notes': postCollection('engineering-notes'),
+  engineering: postCollection('engineering'),
   'product-builds': postCollection('product-builds'),
   'product-writing': postCollection('product-writing'),
   music: postCollection('music'),
