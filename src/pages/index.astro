@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeaturedGrid from '../components/FeaturedGrid.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { getFeatured } from '../lib/content';
+import { siteConfig } from '../config/site';
+
+const sources = [
+  { collection: 'engineering-projects', base: '/engineering/projects' },
+  { collection: 'engineering-notes', base: '/engineering/notes' },
+  { collection: 'product-builds', base: '/product/builds' },
+  { collection: 'product-writing', base: '/product/writing' },
+  { collection: 'music', base: '/music' },
+  { collection: 'creative', base: '/creative' },
+] as const;
+
+const allFeatured = (
+  await Promise.all(
+    sources.map(async ({ collection, base }) => {
+      const entries = await getFeatured(collection);
+      return entries.map((entry) => ({ entry, href: `${base}/${entry.id}` }));
+    })
+  )
+).flat();
+
+const featured = allFeatured
+  .sort((a, b) => b.entry.data.date.valueOf() - a.entry.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title={siteConfig.name}>
+  <section class="intro">
+    <h1>{siteConfig.name}</h1>
+    <p>{siteConfig.tagline}</p>
+    <SocialLinks
+      github={siteConfig.social.github}
+      linkedin={siteConfig.social.linkedin}
+      email={siteConfig.social.email}
+    />
+  </section>
+
+  <section class="section-block">
+    <div class="section-heading">
+      <h2>Featured</h2>
+    </div>
+    <FeaturedGrid items={featured} emptyMessage="Nothing featured yet — check back soon." />
+  </section>
+</BaseLayout>
+
+<style>
+  .intro p {
+    color: var(--colour-text-muted);
+    max-width: 38rem;
+  }
+
+  .intro :global(.social-links) {
+    margin-top: var(--space-2);
+  }
+</style>

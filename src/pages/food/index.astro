@@ -1,0 +1,33 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublished } from '../../lib/content';
+
+const meals = await getPublished('food');
+---
+
+<BaseLayout title="Food" description="A photo gallery of meals, with the odd recipe write-up.">
+  <h1>Food</h1>
+  {
+    meals.length > 0 ? (
+      <div class="grid">
+        {meals.map((meal) => (
+          <a href={`/food/${meal.id}`} class="card card-link">
+            <Image src={meal.data.photos[0].src} alt={meal.data.photos[0].alt} width={480} height={480} />
+            <p class="card-date">
+              {meal.data.date.toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                timeZone: 'UTC',
+              })}
+            </p>
+            <h3>{meal.data.title}</h3>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-state">No meals posted yet.</p>
+    )
+  }
+</BaseLayout>

@@ -1,0 +1,71 @@
+---
+// Filters any [data-tags] card on the page by a selected tag.
+// Vanilla JS only; with JS disabled, all cards remain visible.
+export interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <div class="tag-filter" role="group" aria-label="Filter by tag">
+      <button type="button" class="tag-filter-button is-active" data-tag="">
+        All
+      </button>
+      {tags.map((tag) => (
+        <button type="button" class="tag-filter-button" data-tag={tag}>
+          {tag}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-bottom: var(--space-3);
+  }
+
+  .tag-filter-button {
+    font-size: 0.85rem;
+    background: var(--colour-bg-subtle);
+    border: 1px solid var(--colour-border);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    cursor: pointer;
+    color: var(--colour-text);
+  }
+
+  .tag-filter-button.is-active {
+    background: var(--colour-accent);
+    color: var(--colour-accent-contrast);
+    border-color: var(--colour-accent);
+  }
+</style>
+
+<script>
+  const filter = document.querySelector('.tag-filter');
+  if (filter) {
+    const buttons = filter.querySelectorAll<HTMLButtonElement>('.tag-filter-button');
+    const cards = document.querySelectorAll<HTMLElement>('[data-tags]');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        buttons.forEach((b) => b.classList.remove('is-active'));
+        button.classList.add('is-active');
+
+        const selected = button.dataset.tag ?? '';
+        cards.forEach((card) => {
+          const cardTags = (card.dataset.tags ?? '').split(',');
+          const visible = selected === '' || cardTags.includes(selected);
+          card.style.display = visible ? '' : 'none';
+        });
+      });
+    });
+  }
+</script>

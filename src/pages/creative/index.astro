@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FeaturedGrid from '../../components/FeaturedGrid.astro';
+import { getPublished } from '../../lib/content';
+
+const posts = await getPublished('creative');
+const items = posts.map((entry) => ({ entry, href: `/creative/${entry.id}` }));
+---
+
+<BaseLayout title="Creative" description="Creative work outside of engineering and product.">
+  <h1>Creative</h1>
+  <FeaturedGrid items={items} />
+</BaseLayout>

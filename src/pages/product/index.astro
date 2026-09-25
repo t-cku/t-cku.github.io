@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FeaturedGrid from '../../components/FeaturedGrid.astro';
+import TagFilter from '../../components/TagFilter.astro';
+import { getPublished } from '../../lib/content';
+
+const builds = await getPublished('product-builds');
+const writing = await getPublished('product-writing');
+
+const buildItems = builds.map((entry) => ({ entry, href: `/product/builds/${entry.id}` }));
+const writingItems = writing.map((entry) => ({ entry, href: `/product/writing/${entry.id}` }));
+
+const allTags = new Set<string>();
+[...builds, ...writing].forEach((entry) => entry.data.tags.forEach((tag) => allTags.add(tag)));
+const tags = [...allTags].sort((a, b) => a.localeCompare(b));
+---
+
+<BaseLayout title="Product" description="Vibe-coded tools, product reviews and blog posts.">
+  <h1>Product</h1>
+
+  <TagFilter tags={tags} />
+
+  <section class="section-block">
+    <div class="section-heading">
+      <h2>Builds</h2>
+    </div>
+    <FeaturedGrid items={buildItems} />
+  </section>
+
+  <section class="section-block">
+    <div class="section-heading">
+      <h2>Writing</h2>
+    </div>
+    <FeaturedGrid items={writingItems} />
+  </section>
+</BaseLayout>

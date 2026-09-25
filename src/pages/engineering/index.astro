@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FeaturedGrid from '../../components/FeaturedGrid.astro';
+import { getPublished } from '../../lib/content';
+
+const projects = await getPublished('engineering-projects');
+const notes = await getPublished('engineering-notes');
+
+const projectItems = projects.map((entry) => ({ entry, href: `/engineering/projects/${entry.id}` }));
+const noteItems = notes.map((entry) => ({ entry, href: `/engineering/notes/${entry.id}` }));
+---
+
+<BaseLayout
+  title="Engineering"
+  description="Software and hardware projects, and write-ups of ideas from classes."
+>
+  <h1>Engineering</h1>
+
+  <section class="section-block">
+    <div class="section-heading">
+      <h2>Projects</h2>
+    </div>
+    <FeaturedGrid items={projectItems} />
+  </section>
+
+  <section class="section-block">
+    <div class="section-heading">
+      <h2>Notes</h2>
+    </div>
+    <FeaturedGrid items={noteItems} />
+  </section>
+</BaseLayout>

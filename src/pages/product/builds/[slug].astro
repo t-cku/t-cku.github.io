@@ -1,0 +1,29 @@
+---
+import { render } from 'astro:content';
+import PostLayout from '../../../layouts/PostLayout.astro';
+import { getPublished } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getPublished('product-builds');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<PostLayout
+  title={entry.data.title}
+  date={entry.data.date}
+  summary={entry.data.summary}
+  tags={entry.data.tags}
+  heroImage={entry.data.heroImage}
+  heroImageAlt={entry.data.heroImageAlt}
+  backHref="/product"
+  backLabel="Product"
+>
+  <Content />
+</PostLayout>

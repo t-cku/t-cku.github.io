@@ -1,0 +1,33 @@
+---
+import Card from './Card.astro';
+import type { CollectionEntry, CollectionKey } from 'astro:content';
+
+type PostEntry = CollectionEntry<Exclude<CollectionKey, 'food'>>;
+
+export interface Props {
+  items: { entry: PostEntry; href: string }[];
+  emptyMessage?: string;
+}
+
+const { items, emptyMessage = 'Nothing here yet — check back soon.' } = Astro.props;
+---
+
+{
+  items.length > 0 ? (
+    <div class="grid">
+      {items.map(({ entry, href }) => (
+        <Card
+          href={href}
+          title={entry.data.title}
+          date={entry.data.date}
+          summary={entry.data.summary}
+          tags={entry.data.tags}
+          image={entry.data.heroImage}
+          imageAlt={entry.data.heroImageAlt}
+        />
+      ))}
+    </div>
+  ) : (
+    <p class="empty-state">{emptyMessage}</p>
+  )
+}

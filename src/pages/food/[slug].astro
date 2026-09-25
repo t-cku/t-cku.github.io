@@ -1,0 +1,57 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
+import { getPublished } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const entries = await getPublished('food');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const formattedDate = entry.data.date.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.summary}>
+  <article>
+    <p><a href="/food">&larr; Food</a></p>
+    <header class="post-header">
+      <h1>{entry.data.title}</h1>
+      <p class="card-date">{formattedDate}</p>
+      {
+        entry.data.tags.length > 0 && (
+          <ul class="tag-list">
+            {entry.data.tags.map((tag) => (
+              <li class="tag">{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+    <PhotoGallery photos={entry.data.photos} />
+    <div class="post-body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .post-header {
+    margin-bottom: var(--space-3);
+  }
+
+  .post-body {
+    margin-top: var(--space-3);
+    max-width: 42rem;
+  }
+</style>

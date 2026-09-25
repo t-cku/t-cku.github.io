@@ -1,0 +1,25 @@
+---
+export interface Props {
+  github: string;
+  linkedin: string;
+  email: string;
+}
+
+const { github, linkedin, email } = Astro.props;
+---
+
+<ul class="social-links">
+  <li><a href={github} rel="me noopener noreferrer" target="_blank">GitHub</a></li>
+  <li><a href={linkedin} rel="me noopener noreferrer" target="_blank">LinkedIn</a></li>
+  <li><a href={`mailto:${email}`}>Email</a></li>
+</ul>
+
+<style>
+  .social-links {
+    list-style: none;
+    display: flex;
+    gap: var(--space-2);
+    padding: 0;
+    margin: 0;
+  }
+</style>
