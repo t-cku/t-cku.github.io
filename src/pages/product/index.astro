@@ -18,6 +18,19 @@ const tags = [...allTags].sort((a, b) => a.localeCompare(b));
 <BaseLayout title="Product" description="Vibe-coded tools, product reviews and blog posts.">
   <h1>Product</h1>
 
+  <div class="intro">
+    <p>
+      I've always been curious about why some products just click and others don't. In March 2026, I
+      joined an AI-powered wellness and music platform, as a product manager, working with founders and
+      engineers in New York and London. My time there gave me my first real taste of taking a product
+      from messy ideas to a working v1.
+    </p>
+    <p>
+      This page collects what I'm exploring: small tools I've built with AI, reviews of products I use
+      every day, and notes on ideas I'm thinking through.
+    </p>
+  </div>
+
   <TagFilter tags={tags} />
 
   <section class="section-block">
@@ -34,3 +47,15 @@ const tags = [...allTags].sort((a, b) => a.localeCompare(b));
     <FeaturedGrid items={writingItems} />
   </section>
 </BaseLayout>
+
+<style>
+  .intro {
+    max-width: 42rem;
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .intro p {
+    color: var(--colour-text-muted);
+  }
+</style>
