@@ -16,3 +16,6 @@ npm-debug.log*
 
 # macOS
 .DS_Store
+
+# private notes — not for the public repo
+DECISIONS.md
