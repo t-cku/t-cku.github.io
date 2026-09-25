@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FeaturedGrid from '../components/FeaturedGrid.astro';
-import SocialLinks from '../components/SocialLinks.astro';
 import { getFeatured } from '../lib/content';
 import { siteConfig } from '../config/site';
 
@@ -32,11 +31,6 @@ const featured = allFeatured
   <section class="intro">
     <h1>{siteConfig.name}</h1>
     <p>{siteConfig.tagline}</p>
-    <SocialLinks
-      github={siteConfig.social.github}
-      linkedin={siteConfig.social.linkedin}
-      email={siteConfig.social.email}
-    />
   </section>
 
   <section class="section-block">
@@ -51,9 +45,5 @@ const featured = allFeatured
   .intro p {
     color: var(--colour-text-muted);
     max-width: 38rem;
-  }
-
-  .intro :global(.social-links) {
-    margin-top: var(--space-2);
   }
 </style>
