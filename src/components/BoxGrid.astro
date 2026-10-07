@@ -1,0 +1,98 @@
+---
+// Grid of content boxes with an optional bottom CTA.
+// The CTA uses the entry's `link` if set, otherwise "View more" to its own page
+// (only when it has body text), otherwise no CTA at all.
+import { Image } from 'astro:assets';
+import type { CollectionEntry, CollectionKey } from 'astro:content';
+
+type PostEntry = CollectionEntry<Exclude<CollectionKey, 'food'>>;
+
+export interface Props {
+  entries: PostEntry[];
+  basePath: string;
+  emptyMessage?: string;
+}
+
+const { entries, basePath, emptyMessage = 'Nothing here yet — check back soon.' } = Astro.props;
+
+const boxes = entries.map((entry) => {
+  const hasBody = Boolean(entry.body?.trim());
+  const ctaHref = entry.data.link?.url ?? (hasBody ? `${basePath}/${entry.id}` : undefined);
+  const ctaLabel = entry.data.link?.label ?? 'View more';
+  const isExternal = ctaHref ? /^https?:\/\//.test(ctaHref) : false;
+
+  return {
+    entry,
+    ctaHref,
+    ctaLabel,
+    isExternal,
+    formattedDate: entry.data.date.toLocaleDateString('en-GB', {
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }),
+  };
+});
+---
+
+{
+  boxes.length > 0 ? (
+    <div class="box-grid">
+      {boxes.map(({ entry, ctaHref, ctaLabel, isExternal, formattedDate }) => (
+        <div class="card box" data-tags={entry.data.tags.join(',')}>
+          {entry.data.heroImage && (
+            <Image src={entry.data.heroImage} alt={entry.data.heroImageAlt ?? ''} width={480} height={270} />
+          )}
+          <p class="card-date">{formattedDate}</p>
+          <h3>{entry.data.title}</h3>
+          <p class="card-summary">{entry.data.summary}</p>
+          {entry.data.tags.length > 0 && (
+            <ul class="tag-list">
+              {entry.data.tags.map((tag) => (
+                <li class="tag">{tag}</li>
+              ))}
+            </ul>
+          )}
+          {ctaHref && (
+            <a
+              class="box-cta"
+              href={ctaHref}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
+            >
+              {ctaLabel} {isExternal ? '↗' : '→'}
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p class="empty-state">{emptyMessage}</p>
+  )
+}
+
+<style>
+  .box-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  @media (min-width: 768px) {
+    .box-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .box-cta {
+    margin-top: auto;
+    padding-top: var(--space-1);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .box-cta:hover {
+    text-decoration: underline;
+  }
+</style>

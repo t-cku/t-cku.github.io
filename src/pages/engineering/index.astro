@@ -1,29 +1,10 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import BoxGrid from '../../components/BoxGrid.astro';
 import { getPublished } from '../../lib/content';
 import { skillCategories } from '../../config/skills';
 
 const entries = await getPublished('engineering');
-
-const boxes = entries.map((entry) => {
-  const hasBody = Boolean(entry.body?.trim());
-  const ctaHref = entry.data.link?.url ?? (hasBody ? `/engineering/${entry.id}` : undefined);
-  const ctaLabel = entry.data.link?.label ?? 'View more';
-  const isExternal = ctaHref ? /^https?:\/\//.test(ctaHref) : false;
-
-  return {
-    entry,
-    ctaHref,
-    ctaLabel,
-    isExternal,
-    formattedDate: entry.data.date.toLocaleDateString('en-GB', {
-      month: 'long',
-      year: 'numeric',
-      timeZone: 'UTC',
-    }),
-  };
-});
 ---
 
 <BaseLayout
@@ -48,41 +29,7 @@ const boxes = entries.map((entry) => {
   </div>
 
   <section class="section-block">
-    {
-      boxes.length > 0 ? (
-        <div class="box-grid">
-          {boxes.map(({ entry, ctaHref, ctaLabel, isExternal, formattedDate }) => (
-            <div class="card box">
-              {entry.data.heroImage && (
-                <Image src={entry.data.heroImage} alt={entry.data.heroImageAlt ?? ''} width={480} height={270} />
-              )}
-              <p class="card-date">{formattedDate}</p>
-              <h3>{entry.data.title}</h3>
-              <p class="card-summary">{entry.data.summary}</p>
-              {entry.data.tags.length > 0 && (
-                <ul class="tag-list">
-                  {entry.data.tags.map((tag) => (
-                    <li class="tag">{tag}</li>
-                  ))}
-                </ul>
-              )}
-              {ctaHref && (
-                <a
-                  class="box-cta"
-                  href={ctaHref}
-                  target={isExternal ? '_blank' : undefined}
-                  rel={isExternal ? 'noopener noreferrer' : undefined}
-                >
-                  {ctaLabel} {isExternal ? '↗' : '→'}
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p class="empty-state">Nothing here yet — check back soon.</p>
-      )
-    }
+    <BoxGrid entries={entries} basePath="/engineering" />
   </section>
 </BaseLayout>
 
@@ -97,29 +44,5 @@ const boxes = entries.map((entry) => {
   .skill-category h3 {
     font-size: 0.95rem;
     margin: 0 0 var(--space-1);
-  }
-
-  .box-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-  }
-
-  @media (min-width: 768px) {
-    .box-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .box-cta {
-    margin-top: auto;
-    padding-top: var(--space-1);
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-decoration: none;
-  }
-
-  .box-cta:hover {
-    text-decoration: underline;
   }
 </style>
