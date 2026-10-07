@@ -1,15 +1,15 @@
 :root {
-  /* Your fixed palette — edit these to make the site your own. */
-  --colour-bg: #ffffff;
-  --colour-bg-subtle: #f4f4f5;
-  --colour-text: #1a1a1a;
-  --colour-text-muted: #55555a;
-  --colour-border: #e0e0e2;
-  --colour-accent: #2a5db0;
+  /* Your fixed palette: champagne & gold. */
+  --colour-bg: #fbf8f2;
+  --colour-bg-subtle: #f3ecdf;
+  --colour-text: #29241c;
+  --colour-text-muted: #6b6150;
+  --colour-border: #e7dcc8;
+  --colour-accent: #8a6a1f;
   --colour-accent-contrast: #ffffff;
-  --colour-card-bg: #ffffff;
-  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: var(--font-body);
+  --colour-card-bg: #fffdf8;
+  --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'DM Serif Display', Georgia, serif;
   --radius: 0.5rem;
   --max-width: 68rem;
   --space-1: 0.5rem;

@@ -1,0 +1,491 @@
+---
+// TEMPORARY, dev-only: try out colour palettes and font pairings on the real site.
+// Rendered only by `npm run dev` (see BaseLayout); never ships to the live site.
+// Delete this file and its import once a look is chosen and baked into global.css.
+const palettes = [
+  { id: '', label: 'Champagne & gold (current)' },
+  { id: 'champ-blushcards', label: '★ Champagne + blush cards & tags' },
+  { id: 'champ-rosebg', label: '★ Rosé champagne (blush bg, gold links)' },
+  { id: 'champ-rosegold', label: '★ Champagne + rose-gold links' },
+  { id: 'champ-pink', label: '★ Pink champagne (blush bg, rose-gold links)' },
+  { id: 'terracotta', label: 'Terracotta & cream' },
+  { id: 'sage', label: 'Sage green' },
+  { id: 'lilac', label: 'Lilac & blush' },
+  { id: 'butter', label: 'Butter & olive' },
+  { id: 'ocean', label: 'Ocean blue' },
+  { id: 'midnight', label: 'Midnight (dark)' },
+  { id: 'rose', label: 'Blush & rose' },
+  { id: 'mauve', label: 'Dusty mauve' },
+  { id: 'peach', label: 'Peach & coral' },
+  { id: 'cherry', label: 'Cherry red on cream' },
+  { id: 'latte', label: 'Latte & mocha' },
+  { id: 'lavender', label: 'Lavender haze' },
+  { id: 'plum', label: 'Plum night (dark)' },
+  { id: 'matcha', label: 'Matcha & cream' },
+  { id: 'strawberry', label: 'Strawberry milk' },
+  { id: 'powder', label: 'Powder blue & navy' },
+  { id: 'burgundy', label: 'Burgundy wine' },
+  { id: 'apricot', label: 'Apricot sunset' },
+  { id: 'cornflower', label: 'Cornflower & butter' },
+  { id: 'seafoam', label: 'Seafoam mint' },
+  { id: 'teal', label: 'Deep teal' },
+  { id: 'forest', label: 'Forest & gold (dark)' },
+  { id: 'espresso', label: 'Espresso (dark)' },
+];
+
+const fonts = [
+  { id: '', label: 'DM Serif + DM Sans (current)' },
+  { id: 'cormorant', label: 'Cormorant + Jost — delicate, luxe' },
+  { id: 'bodoni', label: 'Bodoni Moda + Montserrat — fashion mag' },
+  { id: 'italiana', label: 'Italiana + Raleway — airy, graceful' },
+  { id: 'gilda', label: 'Gilda Display + Nunito Sans — soft elegant' },
+  { id: 'fraunces', label: 'Fraunces + Inter — warm editorial' },
+  { id: 'instrument', label: 'Instrument Serif + Work Sans — modern magazine' },
+  { id: 'playfair', label: 'Playfair + Lato — classic' },
+  { id: 'grotesk', label: 'Space Grotesk + Inter — techy' },
+  { id: 'nunito', label: 'Nunito — soft & rounded' },
+];
+---
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@500;700&family=Cormorant+Garamond:wght@500;700&family=Gilda+Display&family=Italiana&family=Jost:wght@400;600&family=Montserrat:wght@400;600&family=Nunito+Sans:wght@400;700&family=Raleway:wght@400;600&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Instrument+Serif&family=Inter:wght@400;600;700&family=Lato:wght@400;700&family=Nunito:wght@400;600;800&family=Playfair+Display:wght@500;700&family=Space+Grotesk:wght@500;700&family=Work+Sans:wght@400;600&display=swap"
+/>
+
+<div class="dev-theme-picker" aria-label="Theme preview (local only)">
+  <p class="dev-theme-title">Try a look <span>(local only)</span></p>
+  <label>
+    Colours
+    <select data-attr="palette">
+      {palettes.map((p) => <option value={p.id}>{p.label}</option>)}
+    </select>
+  </label>
+  <label>
+    Fonts
+    <select data-attr="fonts">
+      {fonts.map((f) => <option value={f.id}>{f.label}</option>)}
+    </select>
+  </label>
+</div>
+
+<style is:inline>
+  html[data-palette='terracotta'] {
+    --colour-bg: #faf6f0;
+    --colour-bg-subtle: #f1e9de;
+    --colour-text: #2b211b;
+    --colour-text-muted: #6b5b4f;
+    --colour-border: #e4d8c8;
+    --colour-accent: #b0502c;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffdf9;
+  }
+
+  html[data-palette='sage'] {
+    --colour-bg: #f4f6f0;
+    --colour-bg-subtle: #e6ebdf;
+    --colour-text: #1f2a22;
+    --colour-text-muted: #5a675c;
+    --colour-border: #d5ddcc;
+    --colour-accent: #46704f;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fbfcf8;
+  }
+
+  html[data-palette='lilac'] {
+    --colour-bg: #fbf7fb;
+    --colour-bg-subtle: #f1e8f3;
+    --colour-text: #2a2130;
+    --colour-text-muted: #6a5d70;
+    --colour-border: #e5d8e8;
+    --colour-accent: #8a4fa8;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #ffffff;
+  }
+
+  html[data-palette='butter'] {
+    --colour-bg: #fdf9ec;
+    --colour-bg-subtle: #f5eccd;
+    --colour-text: #2a2a1c;
+    --colour-text-muted: #66654b;
+    --colour-border: #e8dfbd;
+    --colour-accent: #5c6a14;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffdf4;
+  }
+
+  html[data-palette='ocean'] {
+    --colour-bg: #f3f7f9;
+    --colour-bg-subtle: #e2ecf1;
+    --colour-text: #13252f;
+    --colour-text-muted: #4f6470;
+    --colour-border: #cfdde5;
+    --colour-accent: #1f6f8b;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #ffffff;
+  }
+
+  html[data-palette='midnight'] {
+    --colour-bg: #14161f;
+    --colour-bg-subtle: #1e2230;
+    --colour-text: #ece9e2;
+    --colour-text-muted: #a6a3b0;
+    --colour-border: #2c3142;
+    --colour-accent: #f0a868;
+    --colour-accent-contrast: #1a1a1a;
+    --colour-card-bg: #1a1d29;
+    color-scheme: dark;
+  }
+
+  html[data-palette='rose'] {
+    --colour-bg: #fdf6f7;
+    --colour-bg-subtle: #f8e6ea;
+    --colour-text: #2e1d22;
+    --colour-text-muted: #73565e;
+    --colour-border: #f0d6dc;
+    --colour-accent: #b4466a;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffafb;
+  }
+
+  html[data-palette='mauve'] {
+    --colour-bg: #f8f3f4;
+    --colour-bg-subtle: #ede2e5;
+    --colour-text: #2b2026;
+    --colour-text-muted: #6e5c63;
+    --colour-border: #e2d3d8;
+    --colour-accent: #8c5a6e;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fdfafb;
+  }
+
+  html[data-palette='champagne'] {
+    --colour-bg: #fbf8f2;
+    --colour-bg-subtle: #f3ecdf;
+    --colour-text: #29241c;
+    --colour-text-muted: #6b6150;
+    --colour-border: #e7dcc8;
+    --colour-accent: #8a6a1f;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffdf8;
+  }
+
+  html[data-palette='peach'] {
+    --colour-bg: #fff7f2;
+    --colour-bg-subtle: #fde8dc;
+    --colour-text: #2f1f18;
+    --colour-text-muted: #735a4d;
+    --colour-border: #f6d8c8;
+    --colour-accent: #c0563a;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffbf8;
+  }
+
+  html[data-palette='cherry'] {
+    --colour-bg: #fbf6ee;
+    --colour-bg-subtle: #f3eadb;
+    --colour-text: #2a1c1a;
+    --colour-text-muted: #6b5752;
+    --colour-border: #e8dccb;
+    --colour-accent: #b0213a;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffdf8;
+  }
+
+  html[data-palette='latte'] {
+    --colour-bg: #f7f1ea;
+    --colour-bg-subtle: #ece2d6;
+    --colour-text: #2c2119;
+    --colour-text-muted: #6a5a4d;
+    --colour-border: #e0d3c4;
+    --colour-accent: #7a4e33;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fcf8f3;
+  }
+
+  html[data-palette='lavender'] {
+    --colour-bg: #f6f5fb;
+    --colour-bg-subtle: #e9e6f5;
+    --colour-text: #221f33;
+    --colour-text-muted: #625d78;
+    --colour-border: #dcd8ec;
+    --colour-accent: #6a5acd;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fdfdff;
+  }
+
+  html[data-palette='plum'] {
+    --colour-bg: #1f1520;
+    --colour-bg-subtle: #2a1d2b;
+    --colour-text: #f3e9ef;
+    --colour-text-muted: #bba9b5;
+    --colour-border: #3a2a3b;
+    --colour-accent: #e8a3c0;
+    --colour-accent-contrast: #1f1520;
+    --colour-card-bg: #261a27;
+    color-scheme: dark;
+  }
+
+  html[data-palette='matcha'] {
+    --colour-bg: #f5f7ee;
+    --colour-bg-subtle: #e7edd8;
+    --colour-text: #1f2619;
+    --colour-text-muted: #5d6650;
+    --colour-border: #d8e0c6;
+    --colour-accent: #5b7a2e;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fbfcf6;
+  }
+
+  html[data-palette='strawberry'] {
+    --colour-bg: #fff5f6;
+    --colour-bg-subtle: #ffe3e7;
+    --colour-text: #331c20;
+    --colour-text-muted: #7a5a60;
+    --colour-border: #f7cfd6;
+    --colour-accent: #c2385a;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffafb;
+  }
+
+  html[data-palette='powder'] {
+    --colour-bg: #f2f6fb;
+    --colour-bg-subtle: #e0eaf5;
+    --colour-text: #14213d;
+    --colour-text-muted: #4f5d78;
+    --colour-border: #cddbec;
+    --colour-accent: #1d3a72;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #ffffff;
+  }
+
+  html[data-palette='burgundy'] {
+    --colour-bg: #faf5f2;
+    --colour-bg-subtle: #f0e4df;
+    --colour-text: #2a1517;
+    --colour-text-muted: #6b5052;
+    --colour-border: #e5d3cd;
+    --colour-accent: #7d1f2c;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffbf9;
+  }
+
+  html[data-palette='apricot'] {
+    --colour-bg: #fff8ef;
+    --colour-bg-subtle: #fdebd3;
+    --colour-text: #2e1f12;
+    --colour-text-muted: #75604a;
+    --colour-border: #f5dcb9;
+    --colour-accent: #a85200;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffcf6;
+  }
+
+  html[data-palette='cornflower'] {
+    --colour-bg: #fffbea;
+    --colour-bg-subtle: #fbf1c7;
+    --colour-text: #1e2340;
+    --colour-text-muted: #5a5e78;
+    --colour-border: #efe3b0;
+    --colour-accent: #3b5bcc;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffef6;
+  }
+
+  html[data-palette='seafoam'] {
+    --colour-bg: #f1faf6;
+    --colour-bg-subtle: #dcf2e8;
+    --colour-text: #13291f;
+    --colour-text-muted: #4c6a5c;
+    --colour-border: #c6e8d8;
+    --colour-accent: #187a55;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fbfffd;
+  }
+
+  html[data-palette='teal'] {
+    --colour-bg: #f3f8f7;
+    --colour-bg-subtle: #e0efec;
+    --colour-text: #12302c;
+    --colour-text-muted: #4e6863;
+    --colour-border: #cbe2dd;
+    --colour-accent: #0f6e66;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #ffffff;
+  }
+
+  html[data-palette='forest'] {
+    --colour-bg: #16231d;
+    --colour-bg-subtle: #1e2f27;
+    --colour-text: #ece6d6;
+    --colour-text-muted: #a9b0a0;
+    --colour-border: #2c3f35;
+    --colour-accent: #d8b25a;
+    --colour-accent-contrast: #16231d;
+    --colour-card-bg: #1b2a23;
+    color-scheme: dark;
+  }
+
+  html[data-palette='espresso'] {
+    --colour-bg: #1c1613;
+    --colour-bg-subtle: #27201b;
+    --colour-text: #f1e8df;
+    --colour-text-muted: #b5a698;
+    --colour-border: #3a2f28;
+    --colour-accent: #e3a37a;
+    --colour-accent-contrast: #1c1613;
+    --colour-card-bg: #231c18;
+    color-scheme: dark;
+  }
+
+  html[data-palette='champ-blushcards'] {
+    --colour-bg: #fbf8f2;
+    --colour-bg-subtle: #f8e6e8;
+    --colour-text: #29241c;
+    --colour-text-muted: #6b6150;
+    --colour-border: #ecd9d6;
+    --colour-accent: #8a6a1f;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fff7f7;
+  }
+
+  html[data-palette='champ-rosebg'] {
+    --colour-bg: #fcf5f2;
+    --colour-bg-subtle: #f5e6e1;
+    --colour-text: #2b2220;
+    --colour-text-muted: #6e5c57;
+    --colour-border: #ecd6ce;
+    --colour-accent: #8a6a1f;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffbf9;
+  }
+
+  html[data-palette='champ-rosegold'] {
+    --colour-bg: #fbf8f2;
+    --colour-bg-subtle: #f3ebe2;
+    --colour-text: #29241c;
+    --colour-text-muted: #6b6150;
+    --colour-border: #e9dccd;
+    --colour-accent: #9c5563;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffdf8;
+  }
+
+  html[data-palette='champ-pink'] {
+    --colour-bg: #fdf5f4;
+    --colour-bg-subtle: #f7e4e2;
+    --colour-text: #2d2122;
+    --colour-text-muted: #715b5c;
+    --colour-border: #eed6d3;
+    --colour-accent: #9c5563;
+    --colour-accent-contrast: #ffffff;
+    --colour-card-bg: #fffafa;
+  }
+
+  html[data-fonts='fraunces'] {
+    --font-heading: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+  }
+
+  html[data-fonts='cormorant'] {
+    --font-heading: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Jost', system-ui, sans-serif;
+  }
+
+  html[data-fonts='bodoni'] {
+    --font-heading: 'Bodoni Moda', Georgia, serif;
+    --font-body: 'Montserrat', system-ui, sans-serif;
+  }
+
+  html[data-fonts='italiana'] {
+    --font-heading: 'Italiana', Georgia, serif;
+    --font-body: 'Raleway', system-ui, sans-serif;
+  }
+
+  html[data-fonts='gilda'] {
+    --font-heading: 'Gilda Display', Georgia, serif;
+    --font-body: 'Nunito Sans', system-ui, sans-serif;
+  }
+
+  html[data-fonts='instrument'] {
+    --font-heading: 'Instrument Serif', Georgia, serif;
+    --font-body: 'Work Sans', system-ui, sans-serif;
+  }
+
+  html[data-fonts='playfair'] {
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Lato', system-ui, sans-serif;
+  }
+
+  html[data-fonts='grotesk'] {
+    --font-heading: 'Space Grotesk', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+  }
+
+  html[data-fonts='nunito'] {
+    --font-heading: 'Nunito', system-ui, sans-serif;
+    --font-body: 'Nunito', system-ui, sans-serif;
+  }
+
+  /* Picker itself uses fixed colours so it stays readable on every palette. */
+  .dev-theme-picker {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    z-index: 1000;
+    display: grid;
+    gap: 0.5rem;
+    width: min(18rem, calc(100vw - 2rem));
+    padding: 0.85rem 1rem;
+    background: #ffffff;
+    color: #1a1a1a;
+    border: 1px solid #d0d0d4;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.18);
+    font: 0.85rem/1.4 system-ui, sans-serif;
+  }
+
+  .dev-theme-title {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .dev-theme-title span {
+    font-weight: 400;
+    color: #6b6b70;
+  }
+
+  .dev-theme-picker label {
+    display: grid;
+    gap: 0.2rem;
+    font-weight: 600;
+  }
+
+  .dev-theme-picker select {
+    font: inherit;
+    font-weight: 400;
+    padding: 0.3rem;
+  }
+</style>
+
+<script is:inline>
+  const root = document.documentElement;
+  document.querySelectorAll('.dev-theme-picker select').forEach((select) => {
+    const attr = select.dataset.attr;
+    const key = `dev-theme-${attr}`;
+    let saved = '';
+    try {
+      saved = localStorage.getItem(key) ?? '';
+    } catch {}
+    select.value = saved;
+    root.dataset[attr] = saved;
+
+    select.addEventListener('change', () => {
+      root.dataset[attr] = select.value;
+      try {
+        localStorage.setItem(key, select.value);
+      } catch {}
+    });
+  });
+</script>
