@@ -6,16 +6,16 @@ export interface SkillCategory {
 export const skillCategories: SkillCategory[] = [
   {
     label: 'Software',
-    skills: ['Git/GitHub', 'REST API', 'Docker', 'Jupyter', 'Google Cloud', 'Python', 'Java', 'C++', 'C', 'Verilog'],
+    skills: ['Git/GitHub', 'REST API', 'TCP/IP', 'Docker', 'Jupyter', 'Google Cloud', 'Python', 'Java', 'C++', 'C'],
   },
   {
     label: 'Hardware',
     skills: [
       'FPGA',
+      'Verilog',
       'Digital Logic',
       'UART',
       'Finite State Machines',
-      'TCP/IP',
       'Cadence Virtuoso',
       'QuestaSim',
       'Microcontrollers (Arduino and Raspberry Pi)',
