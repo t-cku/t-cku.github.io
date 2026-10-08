@@ -1,7 +1,7 @@
 ---
 title: "MeloMed"
 date: 2026-03-01
-summary: "A reflection on my experience working as a product manager at MeloMed."
+summary: "Looking back on my first startup experience: being the product manager at MeloMed, learning to listen to users, and keeping a small team in sync across three locations."
 tags: ["Product Management", "Startup", "AI", "Wellness", "Music"]
 featured: false
 draft: false
