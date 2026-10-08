@@ -28,7 +28,7 @@ import profilePhoto from '../assets/profile.jpg';
       </p>
     </div>
     <div class="hero-intro">
-      <h1>{siteConfig.name}</h1>
+      <h1><span class="hero-greeting">Hi, I'm</span> {siteConfig.name}</h1>
       <p>{siteConfig.intro}</p>
     </div>
   </section>
@@ -48,6 +48,18 @@ import profilePhoto from '../assets/profile.jpg';
 
   .hero-intro h1 {
     text-align: center;
+    font-size: clamp(2.5rem, 7vw, 3.5rem);
+    line-height: 1.1;
+  }
+
+  .hero-greeting {
+    display: block;
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--colour-text-muted);
+    margin-bottom: var(--space-2);
   }
 
   .hero-photo {
