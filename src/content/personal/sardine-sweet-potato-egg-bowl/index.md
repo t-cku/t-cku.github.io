@@ -4,7 +4,7 @@ date: 2026-01-01
 datePrecision: year
 section: Recipes
 featured: false
-draft: false
+draft: true
 heroImage: "./sardine-bowl.jpg"
 heroImageAlt: "A bowl of mixed greens, roasted sweet potato cubes, sardines and a fried egg, drizzled with a balsamic, honey and chilli dressing"
 ---

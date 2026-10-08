@@ -5,7 +5,7 @@ datePrecision: year
 section: Recipes
 summary: "I make this when I want an easy, high-protein lunch that's ready in 10 minutes."
 featured: false
-draft: false
+draft: true
 heroImage: "./salmon-toast.jpg"
 heroImageAlt: "Two smoked salmon toasts on sourdough, one with avocado and sesame seeds, the other with cucumber and furikake, each topped with half a jammy egg"
 ---
