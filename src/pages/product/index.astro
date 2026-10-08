@@ -1,16 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BoxGrid from '../../components/BoxGrid.astro';
-import TagFilter from '../../components/TagFilter.astro';
 import { getPublished } from '../../lib/content';
 
 const builds = await getPublished('product-builds');
 const writing = await getPublished('product-writing');
 
-
-const allTags = new Set<string>();
-[...builds, ...writing].forEach((entry) => entry.data.tags.forEach((tag) => allTags.add(tag)));
-const tags = [...allTags].sort((a, b) => a.localeCompare(b));
 ---
 
 <BaseLayout title="Product" description="Vibe-coded tools, product reviews and blog posts.">
@@ -28,8 +23,6 @@ const tags = [...allTags].sort((a, b) => a.localeCompare(b));
       every day, and notes on ideas I'm thinking through.
     </p>
   </div>
-
-  <TagFilter tags={tags} />
 
   <section class="section-block">
     <div class="section-heading">

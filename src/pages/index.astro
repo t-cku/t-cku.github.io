@@ -17,7 +17,7 @@ import profilePhoto from '../assets/profile.jpg';
           fit="cover"
         />
       </div>
-      <p class="location-tag">
+      <p class="hero-tag">
         <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14">
           <path
             fill="currentColor"
@@ -25,6 +25,32 @@ import profilePhoto from '../assets/profile.jpg';
           />
         </svg>
         Hong Kong · London · Los Angeles
+      </p>
+      <p
+        class="hero-tag"
+        title={siteConfig.languages.map((l) => (l.note ? `${l.name} (${l.note})` : l.name)).join(' · ')}
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="15"
+          height="15"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="14.5" cy="9.5" r="7.5" />
+          <ellipse cx="14.5" cy="9.5" rx="3.2" ry="7.5" />
+          <path d="M7 9.5h15M8.6 5.2q5.9 2.6 11.8 0M8.6 13.8q5.9-2.6 11.8 0" />
+          <path
+            d="M4 13h7a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H7l-3 2.5V20a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2z"
+            fill="var(--colour-bg-subtle)"
+          />
+          <path d="M5 15.8h5M5 17.8h5" />
+        </svg>
+        {siteConfig.languages.map((l) => ('label' in l ? l.label : l.name)).join(' · ')}
       </p>
     </div>
     <div class="hero-intro">
@@ -84,7 +110,7 @@ import profilePhoto from '../assets/profile.jpg';
     transform: scale(1.15);
   }
 
-  .location-tag {
+  .hero-tag {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
