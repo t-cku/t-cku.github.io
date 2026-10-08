@@ -1,8 +1,10 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BoxGrid from '../../components/BoxGrid.astro';
 import { getPublished } from '../../lib/content';
 import { skillCategories } from '../../config/skills';
+import viterbiLogo from '../../assets/usc-viterbi.png';
 
 const entries = await getPublished('engineering');
 ---
@@ -11,7 +13,10 @@ const entries = await getPublished('engineering');
   title="Engineering"
   description="Software and hardware projects, links, and write-ups of ideas from classes."
 >
-  <h1>Engineering</h1>
+  <div class="page-heading">
+    <h1>Engineering</h1>
+    <Image src={viterbiLogo} alt="USC Viterbi School of Engineering" width={300} class="school-logo" />
+  </div>
 
   <div class="skills">
     {
@@ -34,6 +39,20 @@ const entries = await getPublished('engineering');
 </BaseLayout>
 
 <style>
+  .page-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-3);
+  }
+
+  .school-logo {
+    width: 150px;
+    height: auto;
+    border-radius: 0;
+  }
+
   .skills {
     display: flex;
     flex-wrap: wrap;
