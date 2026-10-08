@@ -5,4 +5,6 @@ summary: "I was a product manager at an AI-powered wellness and music platform, 
 tags: ["Product Management", "Startup", "AI", "Wellness", "Music"]
 featured: false
 draft: false
+logo: "./logo.png"
+logoAlt: "MeloMed logo"
 ---

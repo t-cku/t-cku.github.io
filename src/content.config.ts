@@ -20,6 +20,9 @@ const postSchema = ({ image }: SchemaContext) =>
   baseSchema.extend({
     heroImage: image().optional(),
     heroImageAlt: z.string().optional(),
+    // Small square logo shown beside the title, e.g. for a company.
+    logo: image().optional(),
+    logoAlt: z.string().optional(),
     link: z
       .object({
         label: z.string(),

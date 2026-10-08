@@ -44,7 +44,14 @@ const boxes = entries.map((entry) => {
             <Image src={entry.data.heroImage} alt={entry.data.heroImageAlt ?? ''} width={480} height={270} />
           )}
           <p class="card-date">{formattedDate}</p>
-          <h3>{entry.data.title}</h3>
+          {entry.data.logo ? (
+            <div class="box-title">
+              <Image src={entry.data.logo} alt={entry.data.logoAlt ?? ''} width={80} height={80} class="box-logo" />
+              <h3>{entry.data.title}</h3>
+            </div>
+          ) : (
+            <h3>{entry.data.title}</h3>
+          )}
           <p class="card-summary">{entry.data.summary}</p>
           {entry.data.tags.length > 0 && (
             <ul class="tag-list">
@@ -82,6 +89,24 @@ const boxes = entries.map((entry) => {
     .box-grid {
       grid-template-columns: repeat(3, 1fr);
     }
+  }
+
+  .box-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .box-title h3 {
+    margin: 0;
+  }
+
+  .box-title :global(.box-logo) {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 0.6rem;
+    border: 1px solid var(--colour-border);
   }
 
   .box-cta {
