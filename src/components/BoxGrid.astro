@@ -4,16 +4,26 @@
 // (only when it has body text), otherwise no CTA at all.
 import { Image } from 'astro:assets';
 import type { CollectionEntry, CollectionKey } from 'astro:content';
+import { formatEntryDate } from '../lib/date';
 
 type PostEntry = CollectionEntry<Exclude<CollectionKey, 'food'>>;
 
 export interface Props {
   entries: PostEntry[];
   basePath: string;
+  // false keeps hero images off the boxes; they still show on the entry's own page.
+  showImages?: boolean;
+  showSummaries?: boolean;
   emptyMessage?: string;
 }
 
-const { entries, basePath, emptyMessage = 'Nothing here yet — check back soon.' } = Astro.props;
+const {
+  entries,
+  basePath,
+  showImages = true,
+  showSummaries = true,
+  emptyMessage = 'Nothing here yet — check back soon.',
+} = Astro.props;
 
 const boxes = entries.map((entry) => {
   const hasBody = Boolean(entry.body?.trim());
@@ -26,11 +36,7 @@ const boxes = entries.map((entry) => {
     ctaHref,
     ctaLabel,
     isExternal,
-    formattedDate: entry.data.date.toLocaleDateString('en-GB', {
-      month: 'long',
-      year: 'numeric',
-      timeZone: 'UTC',
-    }),
+    formattedDate: formatEntryDate(entry.data.date, entry.data.datePrecision),
   };
 });
 ---
@@ -40,7 +46,7 @@ const boxes = entries.map((entry) => {
     <div class="box-grid">
       {boxes.map(({ entry, ctaHref, ctaLabel, isExternal, formattedDate }) => (
         <div class="card box" data-tags={entry.data.tags.join(',')}>
-          {entry.data.heroImage && (
+          {showImages && entry.data.heroImage && (
             <Image src={entry.data.heroImage} alt={entry.data.heroImageAlt ?? ''} width={480} height={270} />
           )}
           <p class="card-date">{formattedDate}</p>
@@ -52,7 +58,7 @@ const boxes = entries.map((entry) => {
           ) : (
             <h3>{entry.data.title}</h3>
           )}
-          <p class="card-summary">{entry.data.summary}</p>
+          {showSummaries && entry.data.summary && <p class="card-summary">{entry.data.summary}</p>}
           {entry.data.tags.length > 0 && (
             <ul class="tag-list">
               {entry.data.tags.map((tag) => (

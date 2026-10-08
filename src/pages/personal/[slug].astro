@@ -4,11 +4,13 @@ import PostLayout from '../../layouts/PostLayout.astro';
 import { getPublished } from '../../lib/content';
 
 export async function getStaticPaths() {
-  const entries = await getPublished('creative');
-  return entries.map((entry) => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  const entries = await getPublished('personal');
+  return entries
+    .filter((entry) => Boolean(entry.body?.trim()))
+    .map((entry) => ({
+      params: { slug: entry.id },
+      props: { entry },
+    }));
 }
 
 const { entry } = Astro.props;
@@ -18,12 +20,13 @@ const { Content } = await render(entry);
 <PostLayout
   title={entry.data.title}
   date={entry.data.date}
+  datePrecision={entry.data.datePrecision}
   summary={entry.data.summary}
   tags={entry.data.tags}
   heroImage={entry.data.heroImage}
   heroImageAlt={entry.data.heroImageAlt}
-  backHref="/creative"
-  backLabel="Creative"
+  backHref="/personal"
+  backLabel="Personal"
 >
   <Content />
 </PostLayout>

@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BoxGrid from '../../components/BoxGrid.astro';
+import { getPublished } from '../../lib/content';
+
+const posts = await getPublished('personal');
+
+// One heading per `section` (e.g. "Recipes"), in order of each section's newest post.
+const sections = new Map<string, typeof posts>();
+for (const post of posts) {
+  const name = post.data.section ?? 'Other';
+  sections.set(name, [...(sections.get(name) ?? []), post]);
+}
+---
+
+<BaseLayout title="Personal" description="Life outside engineering and product: recipes and other things I enjoy.">
+  <h1>Personal</h1>
+
+  {
+    sections.size > 0 ? (
+      [...sections].map(([name, entries]) => (
+        <section class="section-block">
+          <div class="section-heading">
+            <h2>{name}</h2>
+          </div>
+          <BoxGrid entries={entries} basePath="/personal" showImages={false} showSummaries={false} />
+        </section>
+      ))
+    ) : (
+      <p class="empty-state">Nothing here yet — check back soon.</p>
+    )
+  }
+</BaseLayout>

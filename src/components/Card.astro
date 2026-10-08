@@ -6,7 +6,7 @@ export interface Props {
   href: string;
   title: string;
   date: Date;
-  summary: string;
+  summary?: string;
   tags?: string[];
   image?: ImageMetadata;
   imageAlt?: string;
@@ -26,7 +26,7 @@ const formattedDate = date.toLocaleDateString('en-GB', {
   {image && <Image src={image} alt={imageAlt} width={480} height={270} />}
   <p class="card-date">{formattedDate}</p>
   <h3>{title}</h3>
-  <p class="card-summary">{summary}</p>
+  {summary && <p class="card-summary">{summary}</p>}
   {
     tags.length > 0 && (
       <ul class="tag-list">

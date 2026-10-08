@@ -2,11 +2,13 @@
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import BaseLayout from './BaseLayout.astro';
+import { formatEntryDate, type DatePrecision } from '../lib/date';
 
 export interface Props {
   title: string;
   date: Date;
-  summary: string;
+  datePrecision?: DatePrecision;
+  summary?: string;
   tags?: string[];
   heroImage?: ImageMetadata;
   heroImageAlt?: string;
@@ -17,6 +19,7 @@ export interface Props {
 const {
   title,
   date,
+  datePrecision,
   summary,
   tags = [],
   heroImage,
@@ -25,12 +28,7 @@ const {
   backLabel,
 } = Astro.props;
 
-const formattedDate = date.toLocaleDateString('en-GB', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-  timeZone: 'UTC',
-});
+const formattedDate = formatEntryDate(date, datePrecision);
 ---
 
 <BaseLayout title={title} description={summary}>

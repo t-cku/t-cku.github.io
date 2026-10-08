@@ -11,7 +11,7 @@ export const navConfig: NavItem[] = [
   { label: 'Home', href: '/', enabled: true },
   { label: 'Engineering', href: '/engineering', enabled: true },
   { label: 'Product', href: '/product', enabled: true },
+  { label: 'Personal', href: '/personal', enabled: true },
   { label: 'Music', href: '/music', enabled: false },
   { label: 'Food', href: '/food', enabled: false },
-  { label: 'Creative', href: '/creative', enabled: false },
 ];

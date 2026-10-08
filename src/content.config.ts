@@ -7,19 +7,24 @@ import { z } from 'astro/zod';
 const baseSchema = z.object({
   title: z.string(),
   date: z.coerce.date(),
-  summary: z.string(),
+  // 'year' when only the year is known; the box then shows e.g. "2025".
+  datePrecision: z.enum(['month', 'year']).default('month'),
+  // Optional: recipes skip it. Used on boxes and as the page's meta description.
+  summary: z.string().optional(),
   tags: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
   draft: z.boolean().default(false),
 });
 
-// Article-style entries: Engineering, Product (Builds/Writing), Music, Creative.
+// Article-style entries: Engineering, Product (Builds/Writing), Music, Personal.
 // `link` is an optional bottom-of-box CTA — e.g. { label: "View on GitHub", url: "https://…" }
 // overriding the default "View more" link to the entry's own page.
 const postSchema = ({ image }: SchemaContext) =>
   baseSchema.extend({
     heroImage: image().optional(),
     heroImageAlt: z.string().optional(),
+    // Groups entries under a heading on pages that use sections (e.g. Personal → "Recipes").
+    section: z.string().optional(),
     // Small square logo shown beside the title, e.g. for a company.
     logo: image().optional(),
     logoAlt: z.string().optional(),
@@ -55,7 +60,7 @@ export const collections = {
   'product-builds': postCollection('product-builds'),
   'product-writing': postCollection('product-writing'),
   music: postCollection('music'),
-  creative: postCollection('creative'),
+  personal: postCollection('personal'),
   food: defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/food' }),
     schema: foodSchema,
