@@ -55,10 +55,64 @@ import profilePhoto from '../assets/profile.jpg';
     </div>
     <div class="hero-intro">
       <h1><span class="hero-greeting">Hello, I'm</span> {siteConfig.name}</h1>
-      <p>{siteConfig.intro}</p>
+      <p class="hero-typed">
+        <span class="visually-hidden">{siteConfig.intro}</span>
+        <span aria-hidden="true" data-typed-text={siteConfig.intro}
+          ><span class="typed-done"></span><span class="typed-caret"></span><span class="typed-rest"
+            >{siteConfig.intro}</span
+          ></span
+        >
+      </p>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // Types out the intro over a fixed duration once it scrolls into view. The untyped remainder stays in
+  // the layout (invisible) so the page doesn't jump as text appears.
+  const DURATION_MS = 5000;
+  const START_DELAY_MS = 400;
+
+  const root = document.querySelector<HTMLElement>('[data-typed-text]');
+  const done = root?.querySelector<HTMLElement>('.typed-done');
+  const rest = root?.querySelector<HTMLElement>('.typed-rest');
+  const caret = root?.querySelector<HTMLElement>('.typed-caret');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (root && done && rest && caret && !reduceMotion) {
+    const text = root.dataset.typedText ?? '';
+    done.textContent = '';
+    rest.textContent = text;
+    caret.classList.add('is-typing');
+    root.classList.add('is-typing-active');
+
+    let start: number | null = null;
+    const step = (now: number) => {
+      start ??= now;
+      const progress = Math.min((now - start) / DURATION_MS, 1);
+      const count = Math.round(progress * text.length);
+      done.textContent = text.slice(0, count);
+      rest.textContent = text.slice(count);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        caret.classList.remove('is-typing');
+        caret.classList.add('is-finished');
+      }
+    };
+    // Wait until the paragraph is on screen (it sits below the photo on phones).
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        observer.disconnect();
+        setTimeout(() => requestAnimationFrame(step), START_DELAY_MS);
+      }
+    }, { threshold: 0.35 });
+    observer.observe(root);
+  } else if (rest && done) {
+    done.textContent = rest.textContent;
+    rest.textContent = '';
+  }
+</script>
 
 <style>
   .hero {
@@ -70,6 +124,36 @@ import profilePhoto from '../assets/profile.jpg';
   .hero-intro p {
     color: var(--colour-text-muted);
     max-width: 38rem;
+  }
+
+  .is-typing-active .typed-rest {
+    visibility: hidden;
+  }
+
+  .typed-caret {
+    display: none;
+  }
+
+  .typed-caret.is-typing,
+  .typed-caret.is-finished {
+    display: inline-block;
+    width: 2px;
+    height: 1.1em;
+    margin: 0 -1px -0.2em;
+    background: var(--colour-accent);
+  }
+
+  .typed-caret.is-finished {
+    animation: caret-blink 1s step-end 3 forwards;
+  }
+
+  @keyframes caret-blink {
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 
   .hero-intro h1 {
