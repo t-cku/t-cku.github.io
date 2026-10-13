@@ -17,48 +17,46 @@ import profilePhoto from '../assets/profile.jpg';
           fit="cover"
         />
       </div>
-      <details class="hero-tag">
-        <summary>
-          <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14">
-            <path
-              fill="currentColor"
-              d="M12 2c-4.2 0-7.5 3.3-7.5 7.5 0 5.6 6.6 11.6 6.9 11.9a.8.8 0 0 0 1.2 0c.3-.3 6.9-6.3 6.9-11.9C19.5 5.3 16.2 2 12 2Zm0 10.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
-            />
-          </svg>
-          Where I am
-          <span class="hero-tag-chevron" aria-hidden="true"></span>
-        </summary>
-        <p class="hero-tag-content">Hong Kong · London · Los Angeles</p>
-      </details>
-      <details class="hero-tag">
-        <summary>
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            width="15"
-            height="15"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="14.5" cy="9.5" r="7.5" />
-            <ellipse cx="14.5" cy="9.5" rx="3.2" ry="7.5" />
-            <path d="M7 9.5h15M8.6 5.2q5.9 2.6 11.8 0M8.6 13.8q5.9-2.6 11.8 0" />
-            <path
-              d="M4 13h7a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H7l-3 2.5V20a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2z"
-              fill="var(--colour-bg-subtle)"
-            />
-            <path d="M5 15.8h5M5 17.8h5" />
-          </svg>
-          Languages I speak
-          <span class="hero-tag-chevron" aria-hidden="true"></span>
-        </summary>
-        <p class="hero-tag-content">
-          {siteConfig.languages.map((l) => ('label' in l ? l.label : l.name)).join(' · ')}
-        </p>
-      </details>
+      <button type="button" class="hero-tag" aria-pressed="false">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14">
+          <path
+            fill="currentColor"
+            d="M12 2c-4.2 0-7.5 3.3-7.5 7.5 0 5.6 6.6 11.6 6.9 11.9a.8.8 0 0 0 1.2 0c.3-.3 6.9-6.3 6.9-11.9C19.5 5.3 16.2 2 12 2Zm0 10.5a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"
+          />
+        </svg>
+        <span>
+          <span class="hero-tag-label">Where I am</span>
+          <span class="hero-tag-content">Hong Kong · London · Los Angeles</span>
+        </span>
+      </button>
+      <button type="button" class="hero-tag" aria-pressed="false">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="15"
+          height="15"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="14.5" cy="9.5" r="7.5" />
+          <ellipse cx="14.5" cy="9.5" rx="3.2" ry="7.5" />
+          <path d="M7 9.5h15M8.6 5.2q5.9 2.6 11.8 0M8.6 13.8q5.9-2.6 11.8 0" />
+          <path
+            d="M4 13h7a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H7l-3 2.5V20a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2z"
+            fill="var(--colour-bg-subtle)"
+          />
+          <path d="M5 15.8h5M5 17.8h5" />
+        </svg>
+        <span>
+          <span class="hero-tag-label">Languages I speak</span>
+          <span class="hero-tag-content">
+            {siteConfig.languages.map((l) => ('label' in l ? l.label : l.name)).join(' · ')}
+          </span>
+        </span>
+      </button>
     </div>
     <div class="hero-intro">
       <h1><span class="hero-greeting">Hello, I'm</span> {siteConfig.name}</h1>
@@ -75,6 +73,12 @@ import profilePhoto from '../assets/profile.jpg';
 </BaseLayout>
 
 <script>
+  document.querySelectorAll<HTMLButtonElement>('.hero-tag').forEach((tag) => {
+    tag.addEventListener('click', () => {
+      tag.setAttribute('aria-pressed', String(tag.getAttribute('aria-pressed') !== 'true'));
+    });
+  });
+
   // Types out the intro over a fixed duration once it scrolls into view. The untyped remainder stays in
   // the layout (invisible) so the page doesn't jump as text appears.
   const DURATION_MS = 5000;
@@ -202,67 +206,58 @@ import profilePhoto from '../assets/profile.jpg';
   }
 
   .hero-tag {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--colour-text-muted);
-    font-size: 0.8rem;
-  }
-
-  .hero-tag summary {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    max-width: 100%;
     padding: 0.25rem 0.85rem;
     border-radius: 999px;
     background: var(--colour-bg-subtle);
     border: 1px solid var(--colour-border);
+    color: var(--colour-text-muted);
+    font: inherit;
+    font-size: 0.8rem;
     cursor: pointer;
-    list-style: none;
-    user-select: none;
+    transition:
+      color 0.2s ease,
+      border-color 0.2s ease;
   }
 
-  .hero-tag summary::-webkit-details-marker {
+  .hero-tag:hover,
+  .hero-tag[aria-pressed='true'] {
+    color: var(--colour-text);
+    border-color: var(--colour-accent);
+  }
+
+  .hero-tag svg {
+    flex-shrink: 0;
+  }
+
+  .hero-tag-content,
+  .hero-tag[aria-pressed='true'] .hero-tag-label {
     display: none;
   }
 
-  .hero-tag summary:hover {
-    color: var(--colour-text);
+  .hero-tag[aria-pressed='true'] .hero-tag-content {
+    display: inline;
   }
 
-  .hero-tag-chevron {
-    width: 0.4rem;
-    height: 0.4rem;
-    margin-left: 0.15rem;
-    border-right: 1.5px solid currentColor;
-    border-bottom: 1.5px solid currentColor;
-    transform: translateY(-0.1rem) rotate(45deg);
-    transition: transform 0.2s ease;
-  }
-
-  .hero-tag[open] .hero-tag-chevron {
-    transform: translateY(0.1rem) rotate(-135deg);
-  }
-
+  .hero-tag-label,
   .hero-tag-content {
-    margin: 0.4rem 0 0;
-    text-align: center;
-    color: var(--colour-text);
-    animation: hero-tag-reveal 0.25s ease;
+    animation: hero-tag-swap 0.25s ease;
   }
 
-  @keyframes hero-tag-reveal {
+  @keyframes hero-tag-swap {
     from {
       opacity: 0;
-      transform: translateY(-0.25rem);
+      transform: translateY(0.25rem);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-tag-content,
-    .hero-tag-chevron {
+    .hero-tag-label,
+    .hero-tag-content {
       animation: none;
-      transition: none;
     }
   }
 
