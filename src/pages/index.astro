@@ -2,21 +2,55 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../config/site';
-import profilePhoto from '../assets/profile.jpg';
+import restaurantPhoto from '../assets/profile-restaurant.jpg';
+import parisPhoto from '../assets/profile-paris.jpg';
 ---
 
 <BaseLayout title={siteConfig.name}>
   <section class="hero">
     <div class="hero-photo">
-      <div class="hero-photo-frame">
-        <Image
-          src={profilePhoto}
-          alt="Tiffany Ku smiling by the Seine at sunset, with the Eiffel Tower lit up in the background"
-          width={480}
-          height={600}
-          fit="cover"
-        />
-      </div>
+      <button type="button" class="hero-photo-frame" aria-pressed="false" aria-label="View another photo">
+        <span class="hero-photo-card">
+          <span class="hero-photo-face hero-photo-front">
+            <Image
+              src={restaurantPhoto}
+              alt="Tiffany Ku smiling, seated at a wooden table in a restaurant"
+              width={480}
+              height={600}
+              fit="cover"
+              position="top"
+            />
+          </span>
+          <span class="hero-photo-face hero-photo-back">
+            <Image
+              src={parisPhoto}
+              alt="Tiffany Ku smiling by the Seine at sunset, with the Eiffel Tower lit up in the background"
+              width={480}
+              height={600}
+              fit="cover"
+            />
+          </span>
+        </span>
+      </button>
+      <button type="button" class="hero-tag hero-switch" aria-pressed="false">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          width="14"
+          height="14"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 3v5h5M4 13a8 8 0 0 0 14.3 4.9L20 16M20 21v-5h-5" />
+        </svg>
+        <span>
+          <span class="hero-tag-label">View</span>
+          <span class="hero-tag-content">View</span>
+        </span>
+      </button>
       <button type="button" class="hero-tag" aria-pressed="false">
         <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14">
           <path
@@ -46,7 +80,7 @@ import profilePhoto from '../assets/profile.jpg';
           <path d="M7 9.5h15M8.6 5.2q5.9 2.6 11.8 0M8.6 13.8q5.9-2.6 11.8 0" />
           <path
             d="M4 13h7a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H7l-3 2.5V20a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2z"
-            fill="var(--colour-bg-subtle)"
+            fill="var(--colour-bg)"
           />
           <path d="M5 15.8h5M5 17.8h5" />
         </svg>
@@ -73,9 +107,18 @@ import profilePhoto from '../assets/profile.jpg';
 </BaseLayout>
 
 <script>
-  document.querySelectorAll<HTMLButtonElement>('.hero-tag').forEach((tag) => {
+  document.querySelectorAll<HTMLButtonElement>('.hero-tag:not(.hero-switch)').forEach((tag) => {
     tag.addEventListener('click', () => {
       tag.setAttribute('aria-pressed', String(tag.getAttribute('aria-pressed') !== 'true'));
+    });
+  });
+
+  // The photo and its "View" caption share one state, so clicking either keeps both in step.
+  const switchButtons = document.querySelectorAll<HTMLButtonElement>('.hero-photo-frame, .hero-switch');
+  switchButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const pressed = String(button.getAttribute('aria-pressed') !== 'true');
+      switchButtons.forEach((b) => b.setAttribute('aria-pressed', pressed));
     });
   });
 
@@ -190,47 +233,111 @@ import profilePhoto from '../assets/profile.jpg';
     gap: var(--space-1);
   }
 
+  /* Fixed width: the button's stacked photos give it no intrinsic size, so 100% would shrink it to the tags. */
   .hero-photo-frame {
-    width: 100%;
-    max-width: 220px;
+    width: 220px;
+    max-width: 100%;
     aspect-ratio: 4 / 5;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+  }
+
+  .hero-photo-frame:focus {
+    outline: none;
+  }
+
+  .hero-photo-frame:focus-visible {
+    outline: 1px solid var(--colour-accent);
+    outline-offset: 3px;
+  }
+
+  /* Both photos are stacked; pressing the frame fades the Paris one in over the restaurant one. */
+  .hero-photo-card {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-photo-face {
+    position: absolute;
+    inset: 0;
     border-radius: 0.75rem;
     overflow: hidden;
   }
 
-  .hero-photo-frame :global(img) {
+  .hero-photo-back {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .hero-photo-frame[aria-pressed='true'] .hero-photo-back {
+    opacity: 1;
+  }
+
+  .hero-photo-face :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* The Paris shot is landscape, so zoom in on the middle to keep the face readable. */
+  .hero-photo-back :global(img) {
     transform: scale(1.15);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-photo-back {
+      transition: none;
+    }
   }
 
   .hero-tag {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
     max-width: 100%;
-    padding: 0.25rem 0.85rem;
-    border-radius: 999px;
-    background: var(--colour-bg-subtle);
-    border: 1px solid var(--colour-border);
+    padding: 0.15rem 0;
+    background: none;
+    border: none;
     color: var(--colour-text-muted);
     font: inherit;
     font-size: 0.8rem;
     cursor: pointer;
-    transition:
-      color 0.2s ease,
-      border-color 0.2s ease;
+    transition: color 0.2s ease;
   }
 
   .hero-tag:hover,
   .hero-tag[aria-pressed='true'] {
     color: var(--colour-text);
-    border-color: var(--colour-accent);
+  }
+
+  .hero-tag:focus {
+    outline: none;
+  }
+
+  .hero-tag:focus-visible {
+    outline: 1px solid var(--colour-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
   .hero-tag svg {
     flex-shrink: 0;
+    opacity: 0.7;
+  }
+
+  .hero-tag-label {
+    text-decoration: underline dotted;
+    text-decoration-color: var(--colour-border);
+    text-underline-offset: 0.25em;
+  }
+
+  .hero-tag:hover .hero-tag-label {
+    text-decoration-color: currentColor;
   }
 
   .hero-tag-content,
