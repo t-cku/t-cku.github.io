@@ -1,5 +1,5 @@
 ---
-title: "Hangry Fish, FPGA Maze Game"
+title: "FPGA Fish Maze Game"
 date: 2026-04-01
 summary: "A maze game built in Verilog on an FPGA. Steer a hungry fish to the exit on a VGA monitor before the clock runs out, eating food along the way for extra time."
 tags: ["Verilog", "FPGA", "Coursework project"]
