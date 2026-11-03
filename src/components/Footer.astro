@@ -28,7 +28,8 @@ const year = new Date().getFullYear();
     fetch(`https://${el.dataset.goatcounterCode}.goatcounter.com/counter/TOTAL.json`)
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
-        if (!data?.count) return;
+        // count is a formatted string like "1,234"; stay hidden below 500.
+        if (Number(String(data?.count ?? '').replace(/\D/g, '')) < 500) return;
         el.textContent = ` · ${data.count} visits`;
         el.hidden = false;
       })
