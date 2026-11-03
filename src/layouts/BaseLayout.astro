@@ -29,6 +29,14 @@ const pageTitle = title === siteConfig.name ? title : `${title} · ${siteConfig.
     />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <title>{pageTitle}</title>
+    {siteConfig.goatcounter && (
+      <script
+        is:inline
+        data-goatcounter={`https://${siteConfig.goatcounter}.goatcounter.com/count`}
+        async
+        src="//gc.zgo.at/count.js"
+      ></script>
+    )}
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>

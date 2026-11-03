@@ -12,9 +12,29 @@ const year = new Date().getFullYear();
       linkedin={siteConfig.social.linkedin}
       email={siteConfig.social.email}
     />
-    <p>&copy; {year} {siteConfig.name}</p>
+    <p>
+      &copy; {year} {siteConfig.name}
+      {siteConfig.goatcounter && (
+        <span class="visits" data-goatcounter-code={siteConfig.goatcounter} hidden></span>
+      )}
+    </p>
   </div>
 </footer>
+
+<script>
+  // Fill in the total visit count from GoatCounter's public counter.
+  const el = document.querySelector<HTMLElement>('.visits');
+  if (el) {
+    fetch(`https://${el.dataset.goatcounterCode}.goatcounter.com/counter/TOTAL.json`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (!data?.count) return;
+        el.textContent = ` · ${data.count} visits`;
+        el.hidden = false;
+      })
+      .catch(() => {});
+  }
+</script>
 
 <style>
   footer {

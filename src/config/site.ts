@@ -15,4 +15,6 @@ export const siteConfig = {
     linkedin: 'https://www.linkedin.com/in/tiffany-carmen-ku',
     email: 'kutiffany10@gmail.com',
   },
+  // GoatCounter site code (the "xyz" in xyz.goatcounter.com). Empty disables analytics.
+  goatcounter: 't-cku',
 };
